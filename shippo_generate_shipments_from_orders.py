@@ -5,14 +5,11 @@ from selenium import webdriver
 import tempfile
 import urllib
 import datetime
-from pdf_to_csv import pdf_to_csv
 import pyPdf
-import csv
 import shippo
 import parse_pdf
 
 with Browser('chrome') as browser:
-    #browser = Browser('chrome')
     # Visit URL
     url = "https://goshippo.com"
     browser.visit(url)
@@ -20,7 +17,7 @@ with Browser('chrome') as browser:
     # Find and click the 'Login' button
     button = browser.click_link_by_text('Login')
 
-    # Find Email Form
+    # Find Email form and fill
     # example: export SHIPPO_EMAIL="email@email.com"
     browser.fill('email', os.environ['SHIPPO_EMAIL'])
     browser.fill('password', os.environ['SHIPPO_PASSWORD'])
@@ -38,19 +35,8 @@ with Browser('chrome') as browser:
     # Refresh Page, wait 3 seconds so the synchronization has time
     browser.reload()
 
-
     # Select all orders
     browser.find_by_id('select_all').click()
-
-    # Find drop down button
-
-    # for i in range(1210,1220):
-    #     ember_id = 'ember' + str(i)
-    #     print ember_id
-    #     for elem in browser.find_by_id(ember_id):
-    #         if elem.has_class('dropdown-menu ember-view rl-dropdown'):
-    #             print "found drop down menu ", ember_id
-    #             browser.find_by_id(ember_id).click()
 
     # find and click drop down button
     for elem in browser.find_by_css('button'):
@@ -77,19 +63,6 @@ with Browser('chrome') as browser:
     browser.windows.current = browser.windows[0]
     browser.windows[1].close()
 
-
-    ###### Parse Packing slips for addresses #####
-    # print pdf_to_csv(pdf_filename, "\n", 5)
-
-    #create list of orders
-    # orders = []
-
-    # pdf = pyPdf.PdfFileReader(open(pdf_filename, "rb"))
-    # for page in pdf.pages:
-    #     print page.extractText()
-
-
-    ###############################################
     # Call shippo API to create shipment labels and transactions
 
     parse_pdf.parse_pdf_and_create_shipments(pdf_filename)
@@ -109,13 +82,7 @@ with Browser('chrome') as browser:
                 elem.click()
                 break
 
-
-    # print "Waiting for input to exit..."
-    # raw_input()
-
     # Logout...
-    #browser.click_link_by_text('kevinchau321@berkeley.edu')
-    #browser.click_link_by_href('https://goshippo.com/user/logout/')
     for elem in browser.find_by_css('a'):
         if elem.has_class('cursor-pointer'):
             if "LOGOUT" in elem.text:

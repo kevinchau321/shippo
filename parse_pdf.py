@@ -103,10 +103,10 @@ def parse_pdf_and_create_shipments(pdf_filename):
 
         rate = min_rate_object
 
-        # Purchase the desired rate. 
-        transaction = shippo.Transaction.create( 
-            rate=rate.object_id, 
-            label_file_type="PDF", 
+        # Purchase the desired rate.
+        transaction = shippo.Transaction.create(
+            rate=rate.object_id,
+            label_file_type="PDF",
             async=False )
 
         # Retrieve label url and tracking number or error message
@@ -115,4 +115,3 @@ def parse_pdf_and_create_shipments(pdf_filename):
             print transaction.tracking_number
         else:
             print transaction.messages
-
