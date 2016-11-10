@@ -1,6 +1,28 @@
 from splinter import Browser
 import time
 import os
+from selenium import webdriver
+import tempfile
+import urllib
+import datetime
+
+def download_pdf(lnk):
+    options = webdriver.ChromeOptions()
+    tgt = tempfile.mkdtemp()
+    profile = {"plugins.plugins_list": [{"enabled":False,"name":"Chrome PDF Viewer"}],
+        "download.default_directory" : tgt}
+    options.add_experimental_option("prefs",profile)
+    driver = webdriver.Chrome(CHROMEDRIVER, chrome_options = options)
+    driver.get(lnk)
+    driver.find_element_by_id('userName1').send_keys('username')
+    driver.find_element_by_id('password1').send_keys('password')
+    driver.find_element_by_id('loginButton1').click()
+
+    ftgt = os.path.join(tgt,'downloaed.pdf')
+    while not os.path.exists(ftgt):
+        time.sleep(3)
+    driver.close()
+    return ftgt
 
 with Browser('chrome') as browser:
     #browser = Browser('chrome')
@@ -50,27 +72,19 @@ with Browser('chrome') as browser:
             break
 
     # find all links with a cursor-pointer
+    # Select Download packing slips
     for elem in browser.find_by_css('a'):
         if elem.has_class('cursor-pointer'):
             if "Download packing slips" in elem.text:
                 elem.click()
                 break
 
-
-    # This does not work because the ember ID changes everytime there is a new order
-    #browser.find_by_xpath('//*[@id="ember1199"]').click()
-    #browser.find_by_name('Download packing slips for selected orders').first.click()
-    #browser.find_by_xpath('//*[@id="ember1214"]/li[2]').click()
-
-    # print browser.find_by_id('buy_all_button')[0]
-    #browser.click_link_by_text('Download packing slips for selected orders')
-
-
-
-
-
-
+    #webdriver.Chrome().switch_to_alert()
     # Download packing slips
+    browser.windows.current = browser.windows[1]
+    pdf_link = browser.find_by_id('plugin').first['src']
+    pdf_filename = "orders/shippo_orders" + datetime.datetime.now().strftime("%I%M%S%p%B%d%Y") + ".pdf"
+    urllib.urlretrieve(pdf_link, pdf_filename)
 
     # Parse Packing slips for addresses
 
