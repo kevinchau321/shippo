@@ -86,6 +86,9 @@ with Browser('chrome') as browser:
     pdf_filename = "orders/shippo_orders" + datetime.datetime.now().strftime("%I%M%S%p%B%d%Y") + ".pdf"
     urllib.urlretrieve(pdf_link, pdf_filename)
 
+    #return control to main window
+    browser.windows.current = browser.windows[0]
+    browser.windows[1].close()
     # Parse Packing slips for addresses
 
     # Call shippo API to create shipment labels and transactions
