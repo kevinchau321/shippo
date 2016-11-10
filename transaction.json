@@ -1,0 +1,37 @@
+{
+  "code": "", 
+  "source": "USPS", 
+  "text": "Unable to validate Ship To address.\n    Dial-A-Zip error: Address is too ambiguous. Error encountered."
+}]
+{
+  "commercial_invoice_url": null, 
+  "customs_note": "", 
+  "label_url": "", 
+  "messages": [
+    {
+      "code": "", 
+      "source": "USPS", 
+      "text": "Unable to validate Ship To address.\n    Dial-A-Zip error: Address is too ambiguous. Error encountered."
+    }
+  ], 
+  "metadata": "", 
+  "notification_email_from": false, 
+  "notification_email_other": "", 
+  "notification_email_to": false, 
+  "object_created": "2016-11-08T04:29:34.504Z", 
+  "object_id": "1515ad2ac3f84281b66b2fa9ea770174", 
+  "object_owner": "kevinchau321@berkeley.edu", 
+  "object_state": "VALID", 
+  "object_status": "ERROR", 
+  "object_updated": "2016-11-08T04:29:35.209Z", 
+  "order": null, 
+  "parcel": "3de4f9ced69b43b694c1db912199a4f6", 
+  "pickup_date": null, 
+  "rate": "3cad657e4cf94a64a0c4b6ebf5efbc72", 
+  "submission_note": "", 
+  "test": true, 
+  "tracking_history": [], 
+  "tracking_number": "", 
+  "tracking_status": null, 
+  "tracking_url_provider": ""
+}

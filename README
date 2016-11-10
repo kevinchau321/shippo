@@ -1,0 +1,81 @@
+Shippo Programming Assignment
+
+Kevin Chau
+
+This directory contains one source file called "appointments.py". To run the
+program, type "python appointments.py". This will launch a command line 
+interpreter that can schedule appointments. 
+
+"appointments.py" utilizes python's built in "cmd" library in order to build a
+simple and efficient command line interpreter. The "cmd" library handles 
+parsing command line inputs and arguments. The entire program is encapsulated
+in a class called appointments which inherits from the cmd module.
+
+The main data structure behind the appointment schedule is a python dictionary
+called "schedule" that maps keys of date and time (otherwise known as the
+ python object "datetime") to values of appointment_type. We book an
+appointment by inserting the datetime into the dictionary. appointment_type
+can be one of two types, "haircut" for half-hour appointments, and 
+"haircut&shampoo" for hour long appointments. 
+
+An important part of this program is checking for valid dates, times, and 
+appointment types. Exception handling ensures that invalid inputs would not
+cause the interpreter to exit unnecessarily. If the user inputs a valid 
+scheduling request, the program must also check that the appointment would not
+conflict with previous appointments or upcoming appointments. Conflict
+checking is handled in the function check_for_conflicts, which looks for 
+possible conflicting appointments in the global "schedule" dictionary.
+
+"appointments.py" meets the requirements from the specification, but may be
+expanded to provide a more robust and user friendly program. I went ahead and
+decided to add a "Cancel" function, which allows the user to delete
+appointments. A logical next step would be to provide some type of GUI, as well
+as more versatile commands and arguments to previous commands (i.e. list all
+appointments from a certain day).
+
+Here is a log of several commands being inputed to "appointments.py":
+
+$ python appointments.py 
+Welcome to your appointment scheduler! Type 'help' to start.
+(Enter Command) help
+
+Documented commands (type help <topic>):
+========================================
+Cancel  EOF  Exit  List  Schedule  cancel  exit  help  list  schedule
+
+(Enter Command) help Schedule
+Schedule a 'Haircut' or 'Shampoo&Haircut' appointment.
+        
+        Usage: Schedule [appointment_type] [year-month-day] [time]
+        
+        Examples:
+            Schedule haircut 2016-10-31 10:30
+            Schedule haircut&shampoo 2016-11-1 17:15
+        
+(Enter Command) Schedule haircut 2016-10-31 10:30
+(Enter Command) Schedule haircut 2016-10-31 10:15
+Conflict with next appointment.
+(Enter Command) list
+haircut Mon Oct 31 10:30:00 2016
+(Enter Command) Schedule haircut 2016-10-31 10:45
+Conflict with previous appointment.
+(Enter Command) Schedule haircut 2016-10-31 11:00
+(Enter Command) list
+haircut Mon Oct 31 10:30:00 2016
+haircut Mon Oct 31 11:00:00 2016
+(Enter Command) cancel 2016-10-31 10:30
+(Enter Command) cancel 2016-10-31 11:00
+(Enter Command) list
+(Enter Command) schedule haircut&shampoo 2016-11-1 15:15
+(Enter Command) schedule haircut&shampoo 2016-11-1 16:15
+(Enter Command) schedule haircut&shampoo 2016-11-1 16:30
+Conflict with previous appointment.
+(Enter Command) schedule haircut 2016-11-1 17:15
+(Enter Command) schedule haircut 2016-11-1 17:45
+(Enter Command) list
+haircut Tue Nov  1 17:45:00 2016
+haircut Tue Nov  1 17:15:00 2016
+haircut&shampoo Tue Nov  1 16:15:00 2016
+haircut&shampoo Tue Nov  1 15:15:00 2016
+(Enter Command) exit
+Exiting... Destroying schedule.
