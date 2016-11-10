@@ -7,6 +7,8 @@ import urllib
 import datetime
 from pdf_to_csv import pdf_to_csv
 import pyPdf
+import csv
+import shippo
 
 with Browser('chrome') as browser:
     #browser = Browser('chrome')
@@ -73,15 +75,40 @@ with Browser('chrome') as browser:
     #return control to main window
     browser.windows.current = browser.windows[0]
     browser.windows[1].close()
-    # Parse Packing slips for addresses
 
+
+    ###### Parse Packing slips for addresses #####
     # print pdf_to_csv(pdf_filename, "\n", 5)
+
+    #create list of orders
+    orders = []
+
     pdf = pyPdf.PdfFileReader(open(pdf_filename, "rb"))
     for page in pdf.pages:
-        print page.extractText()
+        # new blank order, consisting of address_from, address_to, parcel
+        order = []
+        lines = page.extractText().split('\n')
+        order_num = lines[0].split('#')[1]
+        print order_num
 
 
+
+        address_from = {
+            "object_purpose": "PURCHASE",
+            "name": "Kevin Chau",
+            "street1": "521 Mccollam Dr",
+            "city": "San Jose",
+            "state": "CA",
+            "zip": "95127",
+            "country": "US",
+            "phone": "+1 503 820 9175",
+            "email": "kevinchau321@gmail.com"
+        }
+
+
+    ###############################################
     # Call shippo API to create shipment labels and transactions
+
 
     # hide orders so we won't create duplicate shipments
 

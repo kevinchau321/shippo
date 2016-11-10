@@ -43,7 +43,7 @@ shipment = shippo.Shipment.create(
     async = False
 )
 
-print shipment
+# print shipment
 
 #Create a Transaction Object
 
@@ -64,4 +64,4 @@ if transaction.object_status == "SUCCESS":
 else:
     print transaction.messages
 
-print transaction
+# print transaction
