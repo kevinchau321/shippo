@@ -9,6 +9,7 @@ from pdf_to_csv import pdf_to_csv
 import pyPdf
 import csv
 import shippo
+import parse_pdf
 
 with Browser('chrome') as browser:
     #browser = Browser('chrome')
@@ -81,39 +82,36 @@ with Browser('chrome') as browser:
     # print pdf_to_csv(pdf_filename, "\n", 5)
 
     #create list of orders
-    orders = []
+    # orders = []
 
-    pdf = pyPdf.PdfFileReader(open(pdf_filename, "rb"))
-    for page in pdf.pages:
-        # new blank order, consisting of address_from, address_to, parcel
-        order = []
-        lines = page.extractText().split('\n')
-        order_num = lines[0].split('#')[1]
-        print order_num
-
-
-
-        address_from = {
-            "object_purpose": "PURCHASE",
-            "name": "Kevin Chau",
-            "street1": "521 Mccollam Dr",
-            "city": "San Jose",
-            "state": "CA",
-            "zip": "95127",
-            "country": "US",
-            "phone": "+1 503 820 9175",
-            "email": "kevinchau321@gmail.com"
-        }
+    # pdf = pyPdf.PdfFileReader(open(pdf_filename, "rb"))
+    # for page in pdf.pages:
+    #     print page.extractText()
 
 
     ###############################################
     # Call shippo API to create shipment labels and transactions
 
+    parse_pdf.parse_pdf_and_create_shipments(pdf_filename)
 
     # hide orders so we won't create duplicate shipments
+    # find and click drop down button
+    for elem in browser.find_by_css('button'):
+        if elem.has_class('btn btn-sm btn-primary dropdown-toggle custom-dropdown ember-view rl-dropdown-toggle'):
+            elem.click()
+            break
 
-    print "Waiting for input to exit..."
-    raw_input()
+    # find all links with a cursor-pointer
+    # Select Download packing slips
+    for elem in browser.find_by_css('a'):
+        if elem.has_class('cursor-pointer'):
+            if "Hide" in elem.text:
+                elem.click()
+                break
+
+
+    # print "Waiting for input to exit..."
+    # raw_input()
 
     # Logout...
     #browser.click_link_by_text('kevinchau321@berkeley.edu')
