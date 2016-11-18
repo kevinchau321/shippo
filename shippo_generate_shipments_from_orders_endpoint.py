@@ -13,6 +13,7 @@ import json
 from decimal import Decimal
 from re import sub
 
+# Using with closes the browser on completion
 with Browser('chrome') as browser:
     # Visit URL
     url = "https://goshippo.com"
@@ -178,6 +179,7 @@ with Browser('chrome') as browser:
             print transaction.messages
 
     # Select all orders
+    # There will be an error here if there are no new orders from shopify
     browser.find_by_id('select_all').click()
 
     # hide orders so we won't create duplicate shipments
