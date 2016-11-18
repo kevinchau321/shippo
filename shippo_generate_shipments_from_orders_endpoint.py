@@ -13,51 +13,7 @@ import json
 from decimal import Decimal
 from re import sub
 
-# Using with closes the browser on completion
-with Browser('chrome') as browser:
-    # Visit URL
-    url = "https://goshippo.com"
-    browser.visit(url)
-
-    # Find and click the 'Login' button
-    button = browser.click_link_by_text('Login')
-
-    # Find Email form and fill
-    # example: export SHIPPO_EMAIL="email@email.com"
-    browser.fill('email', os.environ['SHIPPO_EMAIL'])
-    browser.fill('password', os.environ['SHIPPO_PASSWORD'])
-    browser.find_by_value('Log In').click()
-
-    time.sleep(1)
-
-    # Go to orders page
-    browser.click_link_by_href('/orders')
-
-    # Find Sync Orders Button, first instance of button is the sync button...
-    # Click on Sync Orders Button
-    browser.find_by_css('button').click()
-    time.sleep(3)
-    # Refresh Page, wait 3 seconds so the synchronization has time
-    browser.reload()
-
-
-    # capture orders using order endpoint
-    orders = os.popen("curl https://api.goshippo.com/v1/orders/  \
-        -H \"Authorization: ShippoToken shippo_test_2cabafcf72d1758972066f51bdaabe288639f32a\" \
-        -H \"Content-Type: application/json\"").read()
-
-    print "Read orders from shippo account."
-
-    print orders
-
-    print "Parsing JSON..."
-    # parse json orders
-    orders_json = json.loads(orders)
-    print orders_json
-    orders_count = orders_json["count"]
-    print "Number of orders is " + str(orders_count)
-    orders_list = orders_json["results"]
-
+def parse_json_orders(orders_list):
     # print out the orders
     i = 1
     orders = []
@@ -177,6 +133,53 @@ with Browser('chrome') as browser:
             print transaction.tracking_number
         else:
             print transaction.messages
+
+# Using with closes the browser on completion
+with Browser('chrome') as browser:
+    # Visit URL
+    url = "https://goshippo.com"
+    browser.visit(url)
+
+    # Find and click the 'Login' button
+    button = browser.click_link_by_text('Login')
+
+    # Find Email form and fill
+    # example: export SHIPPO_EMAIL="email@email.com"
+    browser.fill('email', os.environ['SHIPPO_EMAIL'])
+    browser.fill('password', os.environ['SHIPPO_PASSWORD'])
+    browser.find_by_value('Log In').click()
+
+    time.sleep(1)
+
+    # Go to orders page
+    browser.click_link_by_href('/orders')
+
+    # Find Sync Orders Button, first instance of button is the sync button...
+    # Click on Sync Orders Button
+    browser.find_by_css('button').click()
+    time.sleep(3)
+    # Refresh Page, wait 3 seconds so the synchronization has time
+    browser.reload()
+
+
+    # capture orders using order endpoint
+    orders = os.popen("curl https://api.goshippo.com/v1/orders/  \
+        -H \"Authorization: ShippoToken shippo_test_2cabafcf72d1758972066f51bdaabe288639f32a\" \
+        -H \"Content-Type: application/json\"").read()
+
+    print "Read orders from shippo account."
+
+    print orders
+
+    print "Parsing JSON..."
+    # parse json orders
+    orders_json = json.loads(orders)
+    print orders_json
+    orders_count = orders_json["count"]
+    print "Number of orders is " + str(orders_count)
+    orders_list = orders_json["results"]
+
+    parse_json_orders(orders_list)
 
     # Select all orders
     # There will be an error here if there are no new orders from shopify
