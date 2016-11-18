@@ -26,7 +26,7 @@ os.system("curl https://api.goshippo.com/v1/orders/  \
           { \
             \"title\": \"Blue Pseudo Deck 8.125\",  \
             \"quantity\": 1,   \
-            \"weight\": 3.50,  \
+            \"net_weight\": 3,  \
             \"weight_unit\": \"lb\",    \
             \"price\": 39.99,   \
             \"currency\": \"USD\",  \
